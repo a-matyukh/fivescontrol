@@ -174,32 +174,8 @@ p.red {
 }
 </style>
 <script>
-// @ts-nocheck
 import { onMount } from "svelte"
-import { initializeApp } from 'firebase/app'
-import { getFirestore, doc, collection, getDocs, getDoc, setDoc } from 'firebase/firestore/lite'
-const config = {
-    apiKey: "AIzaSyCtT4Jc9d1VhfpyWX57MHcgswP1rDJPYFo",
-    authDomain: "test-calls-c1941.firebaseapp.com",
-    projectId: "test-calls-c1941",
-    storageBucket: "test-calls-c1941.appspot.com",
-    messagingSenderId: "614586082849",
-    appId: "1:614586082849:web:eec676fe1dd9d40f1ea560"
-}
-const app = initializeApp(config)
-const db = getFirestore(app)
-
-async function getEvents(db) {
-    const eventsCol = collection(db, 'events');
-    const eventsSnapshot = await getDocs(eventsCol);
-    const eventsList = eventsSnapshot.docs.map(doc => doc.data())
-    console.log(eventsList)
-}
-function setTrigger(prop, newValue) {
-    const docRef = doc(db, 'events', prop);
-    setDoc(docRef, newValue)
-    getEvents(db)
-}
+    import { setTrigger } from "./firebase";
 
 const width = 640
 const height = 480
@@ -216,18 +192,19 @@ let timeWithHelmet = {
 setInterval(() => {
     if (isHandsVisible && eventSequence.currentLabel === "3") {
         timeWithPhone.with += 0.1
-        setTrigger("productivity", { data: false, productivity: false })
+        // setTrigger("productivity", { data: false, productivity: false })
     } else {
         timeWithPhone.without += 0.1
-        setTrigger("productivity", { data: true, productivity: true })
+        // setTrigger("productivity", { data: true, productivity: true })
     }
     if ([0, "nothing"].includes(outfitResult)) {
         timeWithHelmet.without += 0.1
-        setTrigger("safety", { data: false, safety: false })
+        // setTrigger("safety", { data: false, safety: false })
     } else {
         timeWithHelmet.with += 0.1
-        setTrigger("safety", { data: true, safety: true })
+        // setTrigger("safety", { data: true, safety: true })
     }
+    // getEvents(db)
 }, 2000)
 
 let eventNames = {
@@ -284,7 +261,7 @@ let eventSequence = {
             this.accumulated = []
             this.percent = 0
         }
-        setTrigger("process", { count: this.counter, progress: this.percent })
+        // setTrigger("process", { count: this.counter, progress: this.percent })
 
     },
     check() {
