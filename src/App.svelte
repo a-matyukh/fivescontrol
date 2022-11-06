@@ -175,12 +175,9 @@ p.red {
 </style>
 <script>
 import { onMount } from "svelte"
-import { setTrigger } from "./firebase";
 import { io } from "socket.io-client"
 
 const socket = io('https://easylang.ml', { transports : ['websocket']});
-
-
 const width = 640
 const height = 480
 let isShowDebug = true
@@ -196,24 +193,18 @@ let timeWithHelmet = {
 setInterval(() => {
     if (isHandsVisible && eventSequence.currentLabel === "3") {
         timeWithPhone.with += 0.1
-        // setTrigger("productivity", { data: false, productivity: false })
-        socket.emit('productivity', {data: false, productivity: false})
-        
+        socket.emit('productivity', {data: false})
     } else {
         timeWithPhone.without += 0.1
-        // setTrigger("productivity", { data: true, productivity: true })
-        socket.emit('productivity', {data: true, productivity: true})
+        socket.emit('productivity', {data: true})
     }
     if ([0, "nothing"].includes(outfitResult)) {
         timeWithHelmet.without += 0.1
-        // setTrigger("safety", { data: false, safety: false })
-        socket.emit('safety', {data: false, safety: false})
+        socket.emit('safety', {data: false})
     } else {
         timeWithHelmet.with += 0.1
-        // setTrigger("safety", { data: true, safety: true })
-        socket.emit('safety', {data: true, safety: true})
+        socket.emit('safety', {data: true})
     }
-    // getEvents(db)
 }, 2000)
 
 let eventNames = {
@@ -270,9 +261,7 @@ let eventSequence = {
             this.accumulated = []
             this.percent = 0
         }
-        // setTrigger("process", { count: this.counter, progress: this.percent })
-        socket.emit('process', {count: this.counter, progress: this.percent})
-
+        socket.emit('proccess', {count: this.counter, progress: this.percent})
 
     },
     check() {
@@ -303,8 +292,6 @@ let eventSequence = {
         }
     }
 }
-
-// $: if (!isHandsVisible) eventSequence.percent = 0
 
 let featureExtractor, outfitClassifier
 let MNloading = "", videoStatus = ""
